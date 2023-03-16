@@ -1,0 +1,2 @@
+序号,市辖区,街道乡镇,街道面积/㎢,运动场馆密度,公园广场密度,幼儿园密度,小学密度,中学密度,医院密度,诊所密度,医院+诊所密度,公交车站密度,地铁站密度,最近地铁站距离/m,购物中心/商场密度,超市/便利店密度,餐饮服务密度,常住人口密度,就业岗位密度,商业服务占比,文化娱乐占比,医疗卫生占比,教育科研占比,土地利用混合度,建成年数,容积率,绿化率,户型,卧室数,客厅数,卫生间数,面积,朝向,租住形式,经度X,纬度Y,月租金,每平米租金
+id,distr,street,starea,gymd,squd,kinded,primd,highd,hospd,clinid,medicad,busd,subd,ndis,malld,superd,foodd,popud,jobd,trader,amuser,healthr,edur,degree,year,volume,green,houset,bedr,liv,restr,area,direct,type,x,y,price,rent
