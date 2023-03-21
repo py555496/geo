@@ -15,11 +15,12 @@ from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, matthews_corrcoef
 from kernels import *
 
-class GWxgboost (BaseEstimator, RegressorMixin):
+#class GWxgboost (BaseEstimator, RegressorMixin):
+class GWxgboost (RegressorMixin):
     """Data in the form of [nData * nDim], where nDim stands for the number of features.
        This wrapper would provide a Xgboost interface with sklearn estimiator structure, which could be stacked in other Sk pipelines
     """
-    def __init__(self, data_x, data_y,coords,bw,num_round=15, max_depth=15, eta=0.3, verbosity=1, objective_func='reg:squarederror',kernel=None,
+    def __init__(self, data_x, data_y,coords,bw,num_round=15, max_depth=25, eta=0.3, verbosity=1, objective_func='reg:squarederror',kernel=None,
                  eval_metric='logloss', booster='gbtree', special_objective=None, early_stopping_rounds=None,points=None
                  ):
         """
@@ -97,6 +98,9 @@ class GWxgboost (BaseEstimator, RegressorMixin):
         if self.special_objective is None:
             # get the parameter list
             self.para_dict = {'max_depth': self.max_depth,
+                              'colsample_bytree' : 0.35,
+                              'learning_rate' : 0.15,
+                              'alpha': 10,
                               'eta': self.eta,
                               'verbosity': self.verbosity,
                               'objective': self.objective_func,
@@ -105,6 +109,9 @@ class GWxgboost (BaseEstimator, RegressorMixin):
         else:
             # get the parameter list, without stating the objective function
             self.para_dict = {'max_depth': self.max_depth,
+                              'colsample_bytree' : 0.3,
+                              'learning_rate' : 0.2,
+                              'alpha': 10,
                               'eta': self.eta,
                               'verbosity': self.verbosity,
                               'eval_metric': self.eval_metric,
@@ -127,13 +134,13 @@ class GWxgboost (BaseEstimator, RegressorMixin):
         
         if self.special_objective is None:
             # fit the Normal Regressor
-            print("Normal Xgboost")
+            #print("Normal Xgboost")
             self.regression_model = xgb.train(self.para_dict, self.dtrain, self.num_round, self.eval_list,
                                               verbose_eval=False, early_stopping_rounds=self.early_stopping_rounds)
        
         elif self.special_objective == 'weighted':
             # construct the object with imbalanced alpha value
-            print("Weighted Xgboost")
+            #print("Weighted Xgboost")
             #weighted_loss_obj = Geographicaly_Weighted_Loss(kernel=self.kernel,coords=self.coords,bw=self.bw)
             # fit the classfifier
             if self.points is None:
@@ -141,7 +148,6 @@ class GWxgboost (BaseEstimator, RegressorMixin):
             else:
                 m = self.points.shape[0]
             result = self.fit_local(10)  #sequential
-            print(result)
 
             
         
